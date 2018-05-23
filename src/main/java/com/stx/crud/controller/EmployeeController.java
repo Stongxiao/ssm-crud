@@ -85,6 +85,13 @@ public class EmployeeController {
 		Employee employee = employeeService.getEmp(id);
 		return Msg.success().add("emp", employee);
 	}
+	
+	@RequestMapping(value="/empUpdate/{empId}",method=RequestMethod.POST)
+	@ResponseBody
+	public Msg UpdateEmp(Employee employee) {
+		employeeService.updateEmp(employee);
+		return Msg.success();
+	}
 	/*
 	 * 查询员工数据
 	 */
