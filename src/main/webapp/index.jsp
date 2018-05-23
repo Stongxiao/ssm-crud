@@ -162,7 +162,7 @@ http://localhost:3306/crud
 		<div class="row">
 			<div class="col-md-4 col-md-offset-8">
 				<button type="button" class="btn btn-primary" id="emp_add_modal_btn">新增</button>
-				<button type="button" class="btn btn-danger">查询</button>
+				<button type="button" class="btn btn-danger">删除</button>
 			</div>
 		</div>
 		<div class="row">
@@ -331,6 +331,7 @@ http://localhost:3306/crud
 				$(document).on("click",".edit_btn",function(){
 					getDepts("#empUpdateModal select");
 					getEmp($(this).attr("edit-id"));
+					$("#emp_update_btn").attr("edit-id",$(this).attr("edit-id"));
 					$("#empUpdateModal").modal({
 						backdrop:"static"
 					});
@@ -339,7 +340,7 @@ http://localhost:3306/crud
 				
 				function getEmp(id){
 					$.ajax({
-						url:"empUpdate/",
+						url:"getEmp/",
 						data:"id="+id,
 						type:"GET",
 						success:function(result){
@@ -354,6 +355,30 @@ http://localhost:3306/crud
 						}
 					})					
 				}
+				
+				$("#emp_update_btn").click(function(){
+					//1.验证邮箱是否违法
+					/*------------email-----------------*/
+					var email = $("#email_update_input").val();
+					//alert(email);
+					var regEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+					if (!regEmail.test(email)) {
+						show_validate_msg("#email_update_input","error","邮箱格式不正确");
+						return false;
+					}else{
+						show_validate_msg("#email_update_input","success","");
+					}
+					$.ajax({
+						url:"empUpdate/"+$(this).attr("edit-id"),
+						data:$("#empUpdateModal form").serialize(),
+						type:"POST",
+						success:function(result){
+							alert(result.msg);
+						}
+					})
+				})
+				
+				
 				
 				$("#emp_save_btn").click(function(result){
 					if(!validate_add_form()){
