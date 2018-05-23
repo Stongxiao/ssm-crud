@@ -57,6 +57,9 @@ public class EmployeeService {
 		return emp;
 	}
 
-
+	public void updateEmp(Employee employee) {
+		employeeMapper.updateByPrimaryKeySelective(employee);
+		
+	}
 	
 }
