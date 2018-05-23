@@ -51,6 +51,11 @@ public class EmployeeService {
 		return count==0;
 		
 	}
+	
+	public Employee getEmp(Integer id) {
+		Employee emp = employeeMapper.selectByPrimaryKey(id);
+		return emp;
+	}
 
 
 	
