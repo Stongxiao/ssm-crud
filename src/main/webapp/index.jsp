@@ -85,6 +85,69 @@ http://localhost:3306/crud
 			</div>
 		</div>
 	</div>
+	
+	
+		<!-- 员工编辑的模态框 -->
+	<div class="modal fade" id="empUpdateModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" >员工编辑</h4>
+				</div>
+
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label for="empName_update_input" class="col-sm-2 control-label">empName</label>
+							<div class="col-sm-10">
+								 <p class="form-control-static" id="empName_update"></p>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="email_update_input" class="col-sm-2 control-label">Email</label>
+							<div class="col-sm-10">
+								<input type="text" name="email" class="form-control"
+									id="email_update_input" placeholder="员工邮箱"> <span
+									class="help-block" id="email_help"></span>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="gender_update_input" class="col-sm-2 control-label">Gender</label>
+							<div class="col-sm-10">
+								<label class="radio-inline"> <input type="radio"
+									name="gender" id="gender1_update_input" value="M"
+									checked="checked"> 男
+								</label> <label class="radio-inline"> <input type="radio"
+									name="gender" id="gender2_update_input" value="F"> 女
+								</label>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label">deptName</label>
+							<div class="col-sm-4">
+								<select class="form-control" name="dId" id="dept_Update_select">
+
+								</select>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="emp_update_btn">更新</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 
 
 	<!-- 搭建显示list -->
@@ -264,6 +327,33 @@ http://localhost:3306/crud
 					})
 					}
 				});
+				
+				$(document).on("click",".edit_btn",function(){
+					getDepts("#empUpdateModal select");
+					getEmp($(this).attr("edit-id"));
+					$("#empUpdateModal").modal({
+						backdrop:"static"
+					});
+					
+				})
+				
+				function getEmp(id){
+					$.ajax({
+						url:"empUpdate/",
+						data:"id="+id,
+						type:"GET",
+						success:function(result){
+						var empName = result.extend.emp.empName
+						var empGender = result.extend.emp.gender
+						var empEmail = result.extend.emp.email
+						var dept = result.extend.emp.dId
+						$("#empName_update").text(empName);
+						$("#email_update_input").val(empEmail);
+						$("#empUpdateModal input[name=gender]").val([empGender])
+						$("#empUpdateModal select").val([dept])
+						}
+					})					
+				}
 				
 				$("#emp_save_btn").click(function(result){
 					if(!validate_add_form()){
