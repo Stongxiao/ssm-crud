@@ -1,6 +1,7 @@
 package com.stx.crud.controller;
 
 import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 import com.stx.crud.bean.Employee;
 import com.stx.crud.bean.Msg;
 import com.stx.crud.service.EmployeeService;
@@ -36,7 +38,6 @@ public class EmployeeController {
 		List<Employee> emps = employeeService.getAll();
 		PageInfo pageInfo = new PageInfo(emps);
 		model.addAttribute("pageInfo", pageInfo);
-		
 		return Msg.success().add("pageInfo", pageInfo);
 	}
 	
@@ -75,6 +76,14 @@ public class EmployeeController {
 
 		
 		return Msg.success();
+	}
+	
+	@RequestMapping("/empUpdate")
+	@ResponseBody
+	public Msg getEmp(@RequestParam("id")Integer id) {
+		
+		Employee employee = employeeService.getEmp(id);
+		return Msg.success().add("emp", employee);
 	}
 	/*
 	 * 查询员工数据
